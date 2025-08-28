@@ -38,6 +38,11 @@ const happyHourSchema = new mongoose.Schema({
     trim: true,
     default: ''
   },
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'],
+    default: 'pending'
+  },
   // You can add more fields as needed
 }, {
   // This option automatically adds `createdAt` and `updatedAt` fields to your documents.
