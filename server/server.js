@@ -41,14 +41,37 @@ app.post('/api/happy-hours', async (req, res) => {
   }
 });
 
-// GET route to fetch all happy hour events with optional limit
+// GET route to fetch all happy hour events with optional limit and search
 app.get('/api/happy-hours', async (req, res) => {
   try {
     // Get the limit from query parameters or default to 30
     const limit = parseInt(req.query.limit) || 30;
+    
+    // Build search query based on query parameters
+    const searchQuery = {};
+    
+    if (req.query.eventType) {
+      searchQuery.eventType = req.query.eventType;
+    }
+    
+    if (req.query.name) {
+      searchQuery.name = { $regex: req.query.name, $options: 'i' };
+    }
+    
+    if (req.query.address) {
+      searchQuery.address = { $regex: req.query.address, $options: 'i' };
+    }
+    
+    if (req.query.dayOfWeek) {
+      searchQuery.daysOfWeek = { $in: [req.query.dayOfWeek] };
+    }
+    
+    if (req.query.specials) {
+      searchQuery.specials = { $regex: req.query.specials, $options: 'i' };
+    }
 
-    // Fetch happy hour events from the database with the specified limit
-    const happyHours = await HappyHour.find().limit(limit);
+    // Fetch happy hour events from the database with the specified limit and search criteria
+    const happyHours = await HappyHour.find(searchQuery).limit(limit);
 
     // Send back the retrieved happy hour events
     res.status(200).json(happyHours);

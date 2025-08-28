@@ -2,7 +2,20 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+.welcome-message {
   text-align: center;
+  padding: 3rem 2rem;
+  color: #666;
+  font-size: 1.1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
 }
 
 .logo {

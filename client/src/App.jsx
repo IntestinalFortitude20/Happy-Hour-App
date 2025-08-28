@@ -1,49 +1,53 @@
 
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
+import Header from './components/Header';
+import SearchBar from './components/SearchBar';
+import EventList from './components/EventList';
 
 function App() {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hasSearched, setHasSearched] = useState(false);
 
-  useEffect(() => {
-    fetch('http://localhost:3000/api/happy-hours')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch events');
-        return res.json();
-      })
-      .then((data) => {
-        setEvents(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
+  const handleSearch = async (searchField, searchValue) => {
+    if (!searchValue.trim()) {
+      return;
+    }
 
-  if (loading) return <div>Loading events...</div>;
-  if (error) return <div>Error: {error}</div>;
+    setLoading(true);
+    setError(null);
+    setHasSearched(true);
+
+    try {
+      const queryParam = searchField === 'dayOfWeek' ? 'dayOfWeek' : searchField;
+      const url = `http://localhost:3000/api/happy-hours?${queryParam}=${encodeURIComponent(searchValue)}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch events');
+      
+      const data = await response.json();
+      setEvents(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="App">
-      <h1>Happy Hour Events</h1>
-      {events.length === 0 ? (
-        <p>No events found.</p>
-      ) : (
-        <ul>
-          {events.map((event) => (
-            <li key={event._id}>
-              <strong>{event.name}</strong> - {event.eventType} <br />
-              {event.address} <br />
-              {event.daysOfWeek && event.daysOfWeek.join(', ')} <br />
-              {event.startTime} - {event.endTime} <br />
-              Specials: {event.specials}
-            </li>
-          ))}
-        </ul>
+      <Header />
+      <SearchBar onSearch={handleSearch} />
+      {hasSearched && (
+        <EventList events={events} loading={loading} error={error} />
+      )}
+      {!hasSearched && (
+        <div className="welcome-message">
+          <p>Welcome to Happy Hour Finder! Use the search above to find events by name, address, event type, day of the week, or specials.</p>
+        </div>
       )}
     </div>
   );
