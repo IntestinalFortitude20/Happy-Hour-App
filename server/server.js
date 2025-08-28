@@ -82,6 +82,47 @@ app.get('/api/happy-hours', async (req, res) => {
   }
 });
 
+// GET route to fetch events by proximity (within a certain radius of lat/lng)
+app.get('/api/happy-hours/nearby', async (req, res) => {
+  try {
+    const { lat, lng, radius = 50 } = req.query; // radius in miles, default 50
+    
+    if (!lat || !lng) {
+      return res.status(400).json({ error: 'Latitude and longitude are required for proximity search.' });
+    }
+    
+    const latitude = parseFloat(lat);
+    const longitude = parseFloat(lng);
+    const radiusMiles = parseFloat(radius);
+    
+    if (isNaN(latitude) || isNaN(longitude) || isNaN(radiusMiles)) {
+      return res.status(400).json({ error: 'Invalid latitude, longitude, or radius values.' });
+    }
+    
+    // Find events within the specified radius using MongoDB's geospatial query
+    // Convert miles to radians (divide by earth's radius in miles: 3959)
+    const radiusInRadians = radiusMiles / 3959;
+    
+    const nearbyEvents = await HappyHour.find({
+      'location.latitude': { $exists: true },
+      'location.longitude': { $exists: true },
+      'location.latitude': {
+        $gte: latitude - radiusInRadians * 180 / Math.PI,
+        $lte: latitude + radiusInRadians * 180 / Math.PI
+      },
+      'location.longitude': {
+        $gte: longitude - radiusInRadians * 180 / Math.PI / Math.cos(latitude * Math.PI / 180),
+        $lte: longitude + radiusInRadians * 180 / Math.PI / Math.cos(latitude * Math.PI / 180)
+      }
+    });
+    
+    res.status(200).json(nearbyEvents);
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ error: 'Failed to fetch nearby events.' });
+  }
+});
+
 // GET route to fetch a single happy hour event by its unique ID
 app.get('/api/happy-hours/:id', async (req, res) => {
   try {
