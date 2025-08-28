@@ -38,6 +38,11 @@ const happyHourSchema = new mongoose.Schema({
     trim: true,
     default: ''
   },
+  submittedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false // Optional field for user-submitted events
+  },
   // You can add more fields as needed
 }, {
   // This option automatically adds `createdAt` and `updatedAt` fields to your documents.

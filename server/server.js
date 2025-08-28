@@ -5,11 +5,16 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 const HappyHour = require('./models/HappyHour');
+const authRoutes = require('./routes/auth');
+const { optionalAuth, authenticateToken } = require('./middleware/auth');
 const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
 
 // Middleware to parse JSON requests
 app.use(express.json());
+
+// Authentication routes
+app.use('/api/auth', authRoutes);
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
         console.log('Successfully connected to MongoDB!');
@@ -23,11 +28,15 @@ mongoose.connect(process.env.MONGODB_URI)
     console.error(err.message, 'Error connecting to MongoDB:');
   })
 
-// POST route to create a new happy hour event
-app.post('/api/happy-hours', async (req, res) => {
+// POST route to create a new happy hour event (protected)
+app.post('/api/happy-hours', authenticateToken, async (req, res) => {
   try {
     // Create a new instance of the HappyHour model with data from the request body
-    const newHappyHour = new HappyHour(req.body);
+    const happyHourData = {
+      ...req.body,
+      submittedBy: req.user._id // Track who submitted the event
+    };
+    const newHappyHour = new HappyHour(happyHourData);
 
     // Save the new happy hour event to the database
     const savedHappyHour = await newHappyHour.save();
