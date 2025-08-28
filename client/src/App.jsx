@@ -5,6 +5,7 @@ import './App.css';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import EventList from './components/EventList';
+import Map from './components/Map';
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -42,7 +43,10 @@ function App() {
       <Header />
       <SearchBar onSearch={handleSearch} />
       {hasSearched && (
-        <EventList events={events} loading={loading} error={error} />
+        <>
+          <EventList events={events} loading={loading} error={error} />
+          {events.length > 0 && <Map events={events} />}
+        </>
       )}
       {!hasSearched && (
         <div className="welcome-message">
