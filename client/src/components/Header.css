@@ -1,10 +1,12 @@
 .header {
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2d1b4e 0%, #0a0a0a 100%);
   color: white;
   padding: 2rem 1rem;
   margin-bottom: 2rem;
   border-radius: 10px;
+  border: 1px solid #3d2b5e;
+  box-shadow: 0 4px 20px rgba(187, 134, 252, 0.15);
 }
 
 .header h1 {

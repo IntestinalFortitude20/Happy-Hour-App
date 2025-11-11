@@ -1,9 +1,9 @@
 .search-bar {
-  background: #f8f9fa;
+  background: #1a1a1a;
   padding: 1.5rem;
   border-radius: 10px;
   margin-bottom: 2rem;
-  border: 1px solid #e9ecef;
+  border: 1px solid #2d2d2d;
 }
 
 .search-controls {
@@ -16,9 +16,10 @@
 
 .search-field-select {
   padding: 0.75rem;
-  border: 1px solid #ced4da;
+  border: 1px solid #3d3d3d;
   border-radius: 5px;
-  background: white;
+  background: #2a2a2a;
+  color: #e0e0e0;
   font-size: 1rem;
   min-width: 140px;
 }
@@ -26,24 +27,32 @@
 .search-input {
   flex: 1;
   padding: 0.75rem;
-  border: 1px solid #ced4da;
+  border: 1px solid #3d3d3d;
   border-radius: 5px;
+  background: #2a2a2a;
+  color: #e0e0e0;
   font-size: 1rem;
+}
+
+.search-input::placeholder {
+  color: #808080;
 }
 
 .search-button {
   padding: 0.75rem 1.5rem;
-  background: #007bff;
-  color: white;
+  background: #bb86fc;
+  color: #0a0a0a;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
 .search-button:hover {
-  background: #0056b3;
+  background: #d4a5ff;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
