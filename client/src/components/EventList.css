@@ -6,13 +6,13 @@
   text-align: center;
   padding: 2rem;
   font-size: 1.1rem;
-  color: #666;
+  color: #b0b0b0;
 }
 
 .status-message.error {
-  color: #dc3545;
-  background: #f8d7da;
-  border: 1px solid #f5c6cb;
+  color: #ff6b6b;
+  background: #2d1a1a;
+  border: 1px solid #4d2a2a;
   border-radius: 5px;
 }
 
@@ -23,22 +23,23 @@
 }
 
 .event-card {
-  background: white;
-  border: 1px solid #e9ecef;
+  background: #1a1a1a;
+  border: 1px solid #2d2d2d;
   border-radius: 10px;
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 
 .event-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(187, 134, 252, 0.2);
+  border-color: #bb86fc;
 }
 
 .event-name {
   margin: 0 0 1rem 0;
-  color: #333;
+  color: #e0e0e0;
   font-size: 1.3rem;
 }
 
@@ -48,22 +49,23 @@
 
 .event-type {
   display: inline-block;
-  background: #007bff;
-  color: white;
+  background: #bb86fc;
+  color: #0a0a0a;
   padding: 0.25rem 0.75rem;
   border-radius: 15px;
   font-size: 0.9rem;
+  font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
 .event-address {
-  color: #666;
+  color: #909090;
   font-style: italic;
 }
 
 .event-schedule,
 .event-time,
 .event-specials {
-  color: #333;
+  color: #b0b0b0;
   line-height: 1.4;
 }
