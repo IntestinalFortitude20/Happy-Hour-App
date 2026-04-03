@@ -53,3 +53,51 @@
 .read-the-docs {
   color: #888;
 }
+
+.main-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.nav-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #646cff;
+  background: white;
+  color: #646cff;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.nav-btn:hover {
+  background: #646cff;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.nav-btn.active {
+  background: #646cff;
+  color: white;
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+}
+
+.main-content {
+  min-height: 60vh;
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .nav-btn {
+    width: 200px;
+  }
+}

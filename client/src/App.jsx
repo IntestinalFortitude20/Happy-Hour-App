@@ -5,12 +5,15 @@ import './App.css';
 import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import EventList from './components/EventList';
+import EventSubmissionForm from './components/EventSubmissionForm';
+import AdminPanel from './components/AdminPanel';
 
 function App() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [hasSearched, setHasSearched] = useState(false);
+  const [currentView, setCurrentView] = useState('search'); // 'search', 'submit', 'admin'
 
   const handleSearch = async (searchField, searchValue) => {
     if (!searchValue.trim()) {
@@ -37,18 +40,62 @@ function App() {
     }
   };
 
+  const handleSubmitSuccess = () => {
+    // Switch back to search view after successful submission
+    setCurrentView('search');
+  };
+
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'submit':
+        return <EventSubmissionForm onSubmitSuccess={handleSubmitSuccess} />;
+      case 'admin':
+        return <AdminPanel />;
+      default:
+        return (
+          <>
+            <SearchBar onSearch={handleSearch} />
+            {hasSearched && (
+              <EventList events={events} loading={loading} error={error} />
+            )}
+            {!hasSearched && (
+              <div className="welcome-message">
+                <p>Welcome to Happy Hour Finder! Use the search above to find events by name, address, event type, day of the week, or specials.</p>
+              </div>
+            )}
+          </>
+        );
+    }
+  };
+
   return (
     <div className="App">
       <Header />
-      <SearchBar onSearch={handleSearch} />
-      {hasSearched && (
-        <EventList events={events} loading={loading} error={error} />
-      )}
-      {!hasSearched && (
-        <div className="welcome-message">
-          <p>Welcome to Happy Hour Finder! Use the search above to find events by name, address, event type, day of the week, or specials.</p>
-        </div>
-      )}
+      
+      <nav className="main-nav">
+        <button 
+          className={currentView === 'search' ? 'nav-btn active' : 'nav-btn'}
+          onClick={() => setCurrentView('search')}
+        >
+          Search Events
+        </button>
+        <button 
+          className={currentView === 'submit' ? 'nav-btn active' : 'nav-btn'}
+          onClick={() => setCurrentView('submit')}
+        >
+          Submit Event
+        </button>
+        <button 
+          className={currentView === 'admin' ? 'nav-btn active' : 'nav-btn'}
+          onClick={() => setCurrentView('admin')}
+        >
+          Admin Panel
+        </button>
+      </nav>
+
+      <main className="main-content">
+        {renderCurrentView()}
+      </main>
     </div>
   );
 }
